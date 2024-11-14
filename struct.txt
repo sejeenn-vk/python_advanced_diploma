@@ -1,0 +1,16 @@
+|-- .venv
+|-- alembic
+|-- app/
+|   |-- db/
+|   |-- helpers/
+|   |-- models/
+|   |-- routes/
+|   |-- tests/
+|   |-- Dockerfile
+|   |-- main.py
+|   |-- requirements.txt
+|-- static
+|-- templates
+|-- alembic.ini
+|-- docker-compose.yml
+|-- start.sh

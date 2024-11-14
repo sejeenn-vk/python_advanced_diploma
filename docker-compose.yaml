@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: eugene
+      POSTGRES_PASSWORD: very_hard_password
+      POSTGRES_DB: twitter_clone
+    ports:
+      - "5432:5432"
+    networks:
+      - twitter_network
+
+  app:
+    container_name: fast_api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    stop_signal: SIGTERM
+    ports:
+      - "8000:8000"
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: twitter_clone
+      DB_USER: eugene
+      DB_PASS: very_hard_password
+    depends_on:
+      - db
+    networks:
+      - twitter_network
+
+  nginx:
+    container_name: nginx
+    image: nginx
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./static:/usr/share/nginx/html
+      - ./logs/nginx/error:/var/log/nginx/error
+      - ./logs/nginx/access:/var/log/nginx/access
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    networks:
+      - twitter_network
+
+networks:
+  twitter_network:
+    driver: bridge
