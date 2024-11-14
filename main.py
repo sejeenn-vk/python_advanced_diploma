@@ -5,12 +5,12 @@ from fastapi.responses import HTMLResponse
 
 
 app = FastAPI()
-app.mount("/static", StaticFiles(directory="../static"), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 @app.get("/", response_class=HTMLResponse)
 async def get_main():
-    with open("../static/index.html", "r", encoding="utf-8") as file:
+    with open("static/index.html", "r", encoding="utf-8") as file:
         index_html = file.read()
     return HTMLResponse(content=index_html)
 
