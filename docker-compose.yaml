@@ -17,7 +17,7 @@ services:
     container_name: fast_api
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: temp/Dockerfile
     stop_signal: SIGTERM
     ports:
       - "8000:8000"
