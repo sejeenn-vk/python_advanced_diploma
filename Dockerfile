@@ -1,7 +1,12 @@
 FROM python:3.12-slim
+WORKDIR /home
+COPY requirements.txt src/
+RUN pip install --upgrade pip
+RUN pip install -r /home/src/requirements.txt
 
-COPY requirements.txt /src/
-RUN pip install --no-cache-dir --upgrade -r /src/requirements.txt
+COPY src src/
+COPY static static/
 
 EXPOSE 8000
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0"]
+
+CMD ["fastapi", "run", "src/main.py", "--host", "0.0.0.0", "--port", "8000"]
