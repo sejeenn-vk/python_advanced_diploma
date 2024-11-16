@@ -9,10 +9,23 @@ app.mount("/static", StaticFiles(directory="static/"), name="static")
 
 
 @app.get("/", response_class=HTMLResponse)
-async def get_main():
+async def get_main(request):
     with open("static/index.html", "r", encoding="utf-8") as file:
         html_data = file.read()
     return HTMLResponse(content=html_data)
+
+
+@app.get("/api/users/me")
+async def login():
+    return {
+        "result": "true",
+        "user": {
+            "id": 1,
+            "name": "test",
+            "followers": [{"id": 2, "name": "Nikolay"}],
+            "following": [{"id": 3, "name": "Tatyana"}],
+        },
+    }
 
 
 if __name__ == "__main__":
