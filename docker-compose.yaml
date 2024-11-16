@@ -7,13 +7,12 @@ services:
     stop_signal: SIGTERM
     ports:
       - "8000:8000"
-
     depends_on:
       - nginx_web
     networks:
       - twitter_network
 
-  nginx:
+  nginx_web:
     container_name: nginx_web
     image: nginx
     volumes:
@@ -24,8 +23,6 @@ services:
     restart: always
     ports:
       - "80:80"
-    depends_on:
-      - app
     networks:
       - twitter_network
 
