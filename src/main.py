@@ -1,5 +1,7 @@
+from typing import Annotated
+
 import uvicorn
-from fastapi import FastAPI
+from fastapi import FastAPI, Header
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -8,11 +10,9 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static/"), name="static")
 
 
-@app.get("/", response_class=HTMLResponse)
-async def get_main(request):
-    with open("static/index.html", "r", encoding="utf-8") as file:
-        html_data = file.read()
-    return HTMLResponse(content=html_data)
+@app.get("/")
+async def get_main(api_key: Annotated[str | None, Header()] = 'test'):
+    return {"api_key": api_key}
 
 
 @app.get("/api/users/me")
