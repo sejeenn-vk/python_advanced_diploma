@@ -7,6 +7,8 @@ services:
     stop_signal: SIGTERM
     ports:
       - "8000:8000"
+    depends_on:
+      - pg
     networks:
       - twitter_network
 
@@ -20,7 +22,19 @@ services:
     ports:
       - "80:80"
     depends_on:
+      - pg
       - app
+    networks:
+      - twitter_network
+  pg:
+    container_name: pg_twitter_clone
+    image: postgres
+    environment:
+      POSTGRES_DB: twitter_db
+      POSTGRES_USER: twitter_user
+      POSTGRES_PASSWORD: twitter_password
+    ports:
+      - "5432:5432"
     networks:
       - twitter_network
 
