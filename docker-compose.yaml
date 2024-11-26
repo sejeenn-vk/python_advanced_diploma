@@ -32,9 +32,9 @@ services:
     container_name: pg_twitter_clone
     image: postgres
     environment:
-      POSTGRES_DB: twitter_db
-      POSTGRES_USER: twitter_user
-      POSTGRES_PASSWORD: twitter_password
+      POSTGRES_DB: twitter_clone
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
     networks:
