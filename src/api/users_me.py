@@ -12,17 +12,19 @@ users_me = APIRouter(
 
 
 @users_me.get("/users/me", tags=["Users me"], response_model=UsersMe)
-async def get_users_me(api_key: Annotated[str | None, Header()] = None):
-    print(f"==============================={api_key}=================================")
-    return {
-        "result": "true",
-        "user": {
-            "id": 1,
-            "name": "Евгений Воронцов",
-            "followers": [{"id": 2, "name": "Николай Воронцов"}],
-            "following": [{"id": 3, "name": "Татьяна Воронцова"}],
-        },
-    }
+async def get_users_me(
+        session: Annotated[AsyncSession, Depends(db_helper.session_getter)],
+        api_key: Annotated[str | None, Header()] = None,
+):
+    user = await users_crud.get_user_by_api_key(session=session, api_key=api_key)
+    data = {"result": "true", "user": {
+        "id": user.id, "name": user.name,
+        "followers": [], "following": []
+    }}
+
+    # print(f"_________________{user.followers}________________________________")
+
+    return data
 
 
 @users_me.post("", response_model=CreateUser)
