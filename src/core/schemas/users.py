@@ -16,3 +16,10 @@ class User(BaseModel):
 class UsersMe(BaseModel):
     result: bool = "true"
     user: User
+
+
+class CreateUser(BaseModel):
+    name: str = "John Doe"
+    followers: List["User"] = []
+    followed: List["User"] = []
+    api_key: str
