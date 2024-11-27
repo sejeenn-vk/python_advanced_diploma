@@ -43,6 +43,11 @@ async def create_user(
                 "id": 100,
                 "content": "Жили у бабуси, два весёлых гуся!",
                 "attachments": []
+            },
+            {
+                "id": 101,
+                "content": "Один серый другой белый, два веселых гуся!",
+                "attachments": []
             }
         ],
         "author": {
