@@ -36,3 +36,7 @@ class User(Base):
         secondaryjoin=followers_tbl.c.followed_id == id,
         back_populates="followers",
     )
+
+    def __repr__(self):
+        return (f"User(id={self.id}, name={self.name}, "
+                f"api_key={self.api_key})")
