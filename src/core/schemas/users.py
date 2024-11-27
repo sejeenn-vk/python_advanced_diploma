@@ -1,16 +1,16 @@
-from typing import List
+from pydantic import BaseModel, ConfigDict, Field
 
-from pydantic import BaseModel
+
+class Follow(BaseModel):
+    id: int = 2
+    name: str = "Александр Пушкин"
 
 
 class User(BaseModel):
     id: int = 1
-    name: str = "John Doe"
-    followers: List["User"] = [
-        {"id": 2, "name": "Jack Black"},
-        {"id": 3, "name": "Samanta Fox"}
-    ]
-    following: List["User"] = [{"id": 3, "name": "Samanta Fox"}]
+    name: str = "Лев Толстой"
+    followers: list[Follow]
+    following: list[Follow]
 
 
 class UsersMe(BaseModel):
@@ -19,7 +19,12 @@ class UsersMe(BaseModel):
 
 
 class CreateUser(BaseModel):
-    name: str = "John Doe"
-    followers: List["User"] = []
-    followed: List["User"] = []
-    api_key: str
+    name: str = Field(default="Имя Фамилия")
+    api_key: str = Field(default="api_key должен быть уникальным")
+
+
+class UserRead(CreateUser):
+    model_config = ConfigDict(
+        from_attributes=True,
+    )
+    id: int
