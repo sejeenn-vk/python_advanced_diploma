@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from src.api.users import users_route
+from src.api.user import users_route
+from src.api.tweet import tweets_route
 
 from src.core.models.db_helper import db_helper
 from src.core.models.base import Base
@@ -16,3 +17,4 @@ async def lifespan(app: FastAPI):
 
 main_app = FastAPI(lifespan=lifespan)
 main_app.include_router(users_route)
+main_app.include_router(tweets_route)
