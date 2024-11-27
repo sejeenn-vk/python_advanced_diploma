@@ -18,6 +18,19 @@ async def get_user_by_api_key(
     return result.unique().one()
 
 
+async def get_user_by_user_id(
+        session: AsyncSession,
+        user_id,
+) -> User:
+    stmt = (select(User)
+            .where(User.id == user_id)
+            .options(joinedload(User.followers).load_only(User.id, User.name))
+            .options(joinedload(User.followed).load_only(User.id, User.name))
+            )
+    result = await session.scalars(stmt)
+    return result.unique().one()
+
+
 async def create_user(
         session: AsyncSession,
         user_create: CreateUser,
