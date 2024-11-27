@@ -1,22 +1,18 @@
-import uvicorn
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from src.api.users import users_route
+
+from src.core.models.db_helper import db_helper
+from src.core.models.base import Base
 
 
-app = FastAPI()
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # async with db_helper.engine.begin() as conn:
+    #     await conn.run_sync(Base.metadata.drop_all)
+    #     await conn.run_sync(Base.metadata.create_all)
+    yield
+    # await db_helper.dispose()
 
-
-@app.get("/api/users/me")
-async def get_users_me():
-    return {
-        "result": "true",
-        "user": {
-            "id": 1,
-            "name": "Евгений Воронцов",
-            "followers": [{"id": 2, "name": "Николай Воронцов"}],
-            "following": [{"id": 3, "name": "Татьяна Воронцова"}],
-        },
-    }
-
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+main_app = FastAPI(lifespan=lifespan)
+main_app.include_router(users_route)
