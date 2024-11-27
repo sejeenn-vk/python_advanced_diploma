@@ -2,7 +2,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Header, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.core.schemas.users import UsersMe, CreateUser, UserRead
+from src.core.schemas.user import UsersMe, CreateUser, UserRead
 from src.core.models.db_helper import db_helper
 from src.api.crud import user as users_crud
 

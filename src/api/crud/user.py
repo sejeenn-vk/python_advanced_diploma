@@ -2,7 +2,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import joinedload
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.models import User
-from src.core.schemas.users import CreateUser
+from src.core.schemas.user import CreateUser
 
 
 async def get_user_by_api_key(
