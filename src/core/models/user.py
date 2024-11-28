@@ -1,6 +1,8 @@
 from typing import List
 
 from .base import Base
+from .tweet import Tweet
+from .likes import Like
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, Table, Column, Integer, ForeignKey
 
@@ -18,9 +20,20 @@ followers_tbl = Table(
 
 
 class User(Base):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(String(50), nullable=False)
+    """
+    Модель хранения пользователей
+    """
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    name: Mapped[str] = mapped_column(String(50), nullable=False, index=True)
     api_key: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
+
+    tweets: Mapped[List["Tweet"]] = relationship(
+        backref="user", cascade="all, delete-orphan"
+    )
+    likes: Mapped[List["Like"]] = relationship(
+        backref="user",
+        cascade="all, delete-orphan",
+    )
 
     followers: Mapped[List["User"]] = relationship(
         "User",
@@ -36,6 +49,8 @@ class User(Base):
         secondaryjoin=followers_tbl.c.followed_id == id,
         back_populates="followers",
     )
+    # Отключаем проверку строк, тем самым убирая уведомление, возникающее при удалении несуществующей строки
+    __mapper_args__ = {"confirm_deleted_rows": False}
 
     def __repr__(self):
         return (f"User(id={self.id}, name={self.name}, "
