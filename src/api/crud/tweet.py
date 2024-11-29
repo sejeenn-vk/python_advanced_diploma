@@ -46,4 +46,4 @@ async def get_all_tweets(
         )
         .order_by(Tweet.created_at.desc())
     )
-    return result.scalars().unique().all()
+    return result.unique().scalars().all()

@@ -45,5 +45,4 @@ async def get_all_tweets(
 ):
     # /api/tweets?offset=1&limit=5 роут с пагинацией
     tweets = await tweet_crud.get_all_tweets(session=session, current_user=current_user)
-    print(tweets)
     return {"tweets": tweets}

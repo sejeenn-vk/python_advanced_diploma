@@ -35,7 +35,7 @@ async def lifespan(app: FastAPI):
                  f"values ('Ленин жил, Ленин жив, Ленин будет жить!', 2, current_timestamp)")
         )
     yield
-    # await db_helper.dispose()
+    await db_helper.dispose()
 
 main_app = FastAPI(lifespan=lifespan)
 main_app.include_router(users_route)
