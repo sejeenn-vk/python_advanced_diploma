@@ -1,21 +1,25 @@
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class Follow(BaseModel):
+class BaseUserSchema(BaseModel):
     id: int = 2
     name: str = "Александр Пушкин"
+    model_config = ConfigDict(
+        from_attributes=True,  # Автоматическое преобразование данных ORM-модели в объект схемы для сериализации
+        populate_by_name=True,  # Использовать псевдоним вместо названия поля
+    )
 
 
-class User(BaseModel):
+class UserFullSchema(BaseModel):
     id: int = 1
     name: str = "Лев Толстой"
-    followers: list[Follow]
-    following: list[Follow]
+    followers: list[BaseUserSchema]
+    following: list[BaseUserSchema]
 
 
 class UsersMe(BaseModel):
     result: bool = "true"
-    user: User
+    user: UserFullSchema
 
 
 class CreateUser(BaseModel):

@@ -1,31 +1,18 @@
-from typing import Optional
+from typing import Optional, List
 
 from pydantic import BaseModel, Field, ConfigDict
 from .base import BaseSchema
+from .user import BaseUserSchema
+from .like import LikeSchema
 
 
-class CreateTweet(BaseModel):
+class CreateTweetSchema(BaseModel):
     """
     Схема для входных данных при добавлении нового твита
     """
 
     tweet_data: str = Field()
     tweet_media_ids: Optional[list[int]]
-
-    # @field_validator("tweet_data", mode="before")
-    # @classmethod
-    # def check_len_tweet_data(cls, val: str) -> str | None:
-    #     """
-    #     Проверка длины твита с переопределением вывода ошибки в случае превышения
-    #     """
-    #     if len(val) > 280:
-    #         raise CustomApiException(
-    #             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,  # 422
-    #             detail=f"The length of the tweet should not exceed 280 characters. "
-    #                    f"Current value: {len(val)}",
-    #         )
-    #
-    #     return val
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -43,3 +30,28 @@ class TweetResponse(BaseSchema):
         populate_by_name=True,  # Использовать псевдоним вместо названия поля
 
     )
+
+
+class TweetOutSchema(BaseModel):
+    """
+    Схема для вывода твита, автора, вложенных изображений и данных по лайкам
+    """
+
+    id: int
+    tweet_data: str = Field(alias="content")
+    user: BaseUserSchema = Field(alias="author")
+    likes: List[LikeSchema]
+    images: List[str] = Field(alias="attachments")
+
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True,  # Использовать псевдоним вместо названия поля
+    )
+
+
+class TweetListSchema(BaseSchema):
+    """
+    Схема для вывода списка твитов
+    """
+
+    tweets: List[TweetOutSchema]
