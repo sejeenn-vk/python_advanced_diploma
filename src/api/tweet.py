@@ -43,6 +43,5 @@ async def get_all_tweets(
         ],
         current_user: Annotated[User, Depends(get_current_user)],
 ):
-    # /api/tweets?offset=1&limit=5 роут с пагинацией
     tweets = await tweet_crud.get_all_tweets(session=session, current_user=current_user)
     return {"tweets": tweets}
