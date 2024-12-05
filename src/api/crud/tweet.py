@@ -39,6 +39,7 @@ async def get_all_tweets(
     """
     result = await session.execute(
         select(Tweet)
+        # .filter(Tweet.user_id.in_(user.id for user in current_user.following))
         .options(
             joinedload(Tweet.user),
             joinedload(Tweet.likes).subqueryload(Like.user),
@@ -46,4 +47,5 @@ async def get_all_tweets(
         )
         .order_by(Tweet.created_at.desc())
     )
+
     return result.unique().scalars().all()
