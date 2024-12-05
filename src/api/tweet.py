@@ -1,12 +1,11 @@
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Security
-from sqlalchemy import select
+from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.models import db_helper, User
 from src.core.schemas.tweet import CreateTweetSchema, TweetResponse, TweetListSchema
-from src.utils.get_user import get_current_user
+from src.api.crud.get_user import get_current_user
 from src.api.crud import tweet as tweet_crud
 
 tweets_route = APIRouter(

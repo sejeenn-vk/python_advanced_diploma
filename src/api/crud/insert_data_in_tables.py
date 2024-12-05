@@ -18,12 +18,17 @@ tweet_data = [
         "content": "Ленин жил, Ленин жив, Ленин будет жить!",
         "user_id": 2, "created_at": datetime.datetime.now()
     },
+    {"content": "Я помню чудное мгновенье...", "user_id": 3, "created_at": datetime.datetime.now()},
 ]
 
 like_data = [
     {"user_id": 1, "tweet_id": 2},
-    {"user_id": 2, "tweet_id": 1},
-    {"user_id": 3, "tweet_id": 1},
+    {"user_id": 2, "tweet_id": 2},
+    {"user_id": 3, "tweet_id": 2},
+    {"user_id": 1, "tweet_id": 3},
+    {"user_id": 2, "tweet_id": 3},
+    {"user_id": 1, "tweet_id": 4},
+
 ]
 
 followed_data = [

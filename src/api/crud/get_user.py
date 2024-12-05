@@ -4,6 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi.security import APIKeyHeader
 from fastapi import Security, Depends
+from sqlalchemy.orm import joinedload
 from starlette.requests import Request
 
 from src.core.models import db_helper, User
@@ -28,7 +29,8 @@ async def get_current_user(
             Depends(db_helper.session_getter),],
         token: str = Security(TOKEN)
 ):
-    stmt = select(User).where(User.api_key == token)
+    stmt = select(User).where(User.api_key == token).options(joinedload(User.followed).load_only(User.id, User.name))
     result = await session.scalars(stmt)
     user = result.unique().one()
+
     return user
