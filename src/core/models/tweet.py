@@ -3,6 +3,7 @@ import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import String, ForeignKey
+from sqlalchemy.sql import func
 
 from .base import Base
 from .images import Image
@@ -17,7 +18,7 @@ class Tweet(Base):
     id: Mapped[int] = mapped_column(primary_key=True, index=True)
     content: Mapped[str] = mapped_column(String(280))
     created_at: Mapped[datetime.datetime] = mapped_column(
-        default=datetime.datetime.now(), nullable=True
+        default=func.now(), nullable=True
     )
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
     images: Mapped[List["Image"]] = relationship(
@@ -32,4 +33,5 @@ class Tweet(Base):
 
     def __repr__(self):
         return (f"Tweet(id={self.id}, content={self.content}, "
-                f"created_at={self.created_at})")
+                f"created_at={self.created_at}, user_id={self.user_id},"
+                f"likes={self.likes}, images={self.images})")
