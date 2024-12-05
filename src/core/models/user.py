@@ -48,6 +48,7 @@ class User(Base):
         primaryjoin=followers_tbl.c.follower_id == id,
         secondaryjoin=followers_tbl.c.followed_id == id,
         back_populates="followers",
+        lazy="selectin",
     )
     # Отключаем проверку строк, тем самым убирая уведомление, возникающее при удалении несуществующей строки
     __mapper_args__ = {"confirm_deleted_rows": False}
