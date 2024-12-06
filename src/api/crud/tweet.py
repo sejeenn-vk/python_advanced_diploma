@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import select, func
 from sqlalchemy.orm import joinedload
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -47,13 +47,12 @@ async def get_all_tweets(
         )
         .order_by(Tweet.created_at.desc())
     )
-    test = await session.execute(
-        select(Tweet)
-        .filter(Tweet.user_id.in_(user.id for user in current_user.followed))
-        .options(joinedload(Tweet.likes))
-
-    )
-    from sqlalchemy import func
+    stmt = (select(Tweet)
+            # .filter(Tweet.user_id.in_(user.id for user in current_user.followed))
+            .options(joinedload(Tweet.likes)))
+    print("===========================================")
+    print(stmt)
+    print("===========================================")
 
     # # Сортировка по количеству адресов у пользователя
     # user_address_counts = session.query(User.name, func.count(Address.id).label('address_count')).join(
@@ -61,5 +60,4 @@ async def get_all_tweets(
     # сортировка по имени курса и преподавателю
     # tweets = session.query(Tweet).join(Student.courses).order_by(Course.name, Course.teacher).all()
 
-    print(test.unique().all())
     return result.unique().scalars().all()
